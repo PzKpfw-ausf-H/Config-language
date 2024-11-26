@@ -1,0 +1,7 @@
+[playlist]
+name = "My Playlist"
+tracks = ["Track1", "Track2", "Track3"]
+
+[playlist.metadata]
+creator = "User123"
+likes = 150
