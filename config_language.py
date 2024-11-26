@@ -94,13 +94,13 @@ def convert_dict(d, indent_level=0):
     for key, value in d.items():
         if not key.isidentifier():
             raise ValueError(f"Некорректное имя: {key}")
-        converted_value = (
-            convert_dict(value, indent_level + 1)
-            if isinstance(value, dict)
-            else convert_value(value)
-        )
-        output += f"{indent} {key} := {converted_value};\n"
-    output += f"{indent}end\n"
+        if isinstance(value, dict):
+            converted_value = convert_dict(value, indent_level + 1)
+            output += f"{indent} {key} := {converted_value}\n"
+        else:
+            converted_value = convert_value(value)
+            output += f"{indent} {key} := {converted_value};\n"
+    output += f"{indent}end;"
     return output
 
 def main():
