@@ -88,14 +88,19 @@ def is_valid_name(name):
     return name.isidentifier()
 
 # Функция для преобразования словарей
-def convert_dict(d):
-    output = "begin\n"
+def convert_dict(d, indent_level=0):
+    indent = " " * (indent_level * 2)  # Два пробела на уровень вложенности
+    output = f"{indent}begin\n"
     for key, value in d.items():
-        if not is_valid_name(key):
+        if not key.isidentifier():
             raise ValueError(f"Некорректное имя: {key}")
-        converted_value = convert_value(value)
-        output += f" {key} := {converted_value};\n"
-    output += "end"
+        converted_value = (
+            convert_dict(value, indent_level + 1)
+            if isinstance(value, dict)
+            else convert_value(value)
+        )
+        output += f"{indent} {key} := {converted_value};\n"
+    output += f"{indent}end\n"
     return output
 
 def main():
